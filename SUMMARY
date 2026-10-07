@@ -1,3 +1,3 @@
-为每个应用指定独立的网络出口：主 Wi-Fi、副 Wi-Fi（双 WLAN）、蜂窝或有线以太网可按应用分配，出口由内核策略路由（`ip rule`）落实，不使用 VPN，吞吐与时延接近原生。
+为每个应用指定独立的网络出口。
 
-Give every app its own network egress: assign apps to primary Wi-Fi, secondary Wi-Fi (dual Wi-Fi), cellular or Ethernet. Egress is enforced in the kernel with policy routing (`ip rule`), with no VPN, so throughput and latency stay close to native.
+Give every app its own network egress.
