@@ -1,11 +1,12 @@
 # MultiRoute
 
 [简体中文](README.md) | [**English**](README_EN.md)
-[![LSPosed](https://img.shields.io/badge/LSPosed-modules.lsposed.org-orange.svg)](https://modules.lsposed.org/module/io.github.linoleic.multiroute)
+
 [![Release](https://img.shields.io/github/v/release/Linoleic/MultiRoute?label=release)](https://github.com/Linoleic/MultiRoute/releases)
 [![Android](https://img.shields.io/badge/Android-11%2B%20%28%20verified%20on%2016%20%2F%2017%20%29-green.svg)](https://developer.android.com)
 [![build](https://github.com/Linoleic/MultiRoute/actions/workflows/build.yml/badge.svg)](https://github.com/Linoleic/MultiRoute/actions/workflows/build.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Linoleic/MultiRoute/blob/master/LICENSE)
+
 **Give every app its own network egress.**
 
 Android allows exactly one system-wide default network, so an app that does not bind to a network itself
