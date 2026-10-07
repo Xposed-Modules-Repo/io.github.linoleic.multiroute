@@ -1,3 +1,2 @@
-为每个应用指定独立的网络出口。
-
-Give every app its own network egress.
+为每个应用指定独立的网络通道。
+Give every app its own network channel.
