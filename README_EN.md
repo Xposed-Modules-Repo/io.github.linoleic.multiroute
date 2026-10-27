@@ -1,10 +1,10 @@
 # MultiRoute
 
-[简体中文](README.md) | [**English**](README_EN.md)
+[简体中文](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/blob/main/README.md) | [**English**](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/blob/main/README_EN.md)
 
 [![Release](https://img.shields.io/github/v/release/Xposed-Modules-Repo/io.github.linoleic.multiroute?label=release)](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/releases)
 [![Android](https://img.shields.io/badge/Android-11%2B-green.svg)](https://developer.android.com)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/blob/main/LICENSE)
 
 MultiRoute is an Android LSPosed module for per-app routing, secondary Wi-Fi connection management and hotspot upstream selection. Routing uses Linux kernel policy rules without userspace VPN forwarding.
 
@@ -51,4 +51,4 @@ NetworkStack / Tethering packages include `com.android.networkstack`, `com.andro
 
 ## License
 
-[GNU General Public License v3.0](LICENSE)
+[GNU General Public License v3.0](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/blob/main/LICENSE)

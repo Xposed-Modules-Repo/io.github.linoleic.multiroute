@@ -1,10 +1,10 @@
 # MultiRoute
 
-[**简体中文**](README.md) | [English](README_EN.md)
+[**简体中文**](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/blob/main/README.md) | [English](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/blob/main/README_EN.md)
 
 [![Release](https://img.shields.io/github/v/release/Xposed-Modules-Repo/io.github.linoleic.multiroute?label=release)](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/releases)
 [![Android](https://img.shields.io/badge/Android-11%2B-green.svg)](https://developer.android.com)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/blob/main/LICENSE)
 
 MultiRoute 是一个 Android LSPosed 模块，提供分应用路由、副 Wi-Fi 连接管理和个人热点上游选择。分流使用 Linux 内核策略路由，不使用用户态 VPN 转发。
 
@@ -51,4 +51,4 @@ NetworkStack / Tethering 包包括 `com.android.networkstack`、`com.android.net
 
 ## 许可协议
 
-[GNU General Public License v3.0](LICENSE)
+[GNU General Public License v3.0](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/blob/main/LICENSE)
