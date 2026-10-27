@@ -1,2 +1,2 @@
-为每个应用指定独立的网络通道。
-Give every app its own network channel.
+分应用路由、副 Wi-Fi 管理与个人热点上游选择。
+Per-app routing, secondary Wi-Fi management, and hotspot upstream selection.

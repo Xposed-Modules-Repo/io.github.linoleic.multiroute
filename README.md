@@ -2,50 +2,53 @@
 
 [**简体中文**](README.md) | [English](README_EN.md)
 
-[![Release](https://img.shields.io/github/v/release/Linoleic/MultiRoute?label=release)](https://github.com/Linoleic/MultiRoute/releases)
-[![Android](https://img.shields.io/badge/Android-11%2B%20%28%20verified%20on%2016%20%2F%2017%20%29-green.svg)](https://developer.android.com)
-[![build](https://github.com/Linoleic/MultiRoute/actions/workflows/build.yml/badge.svg)](https://github.com/Linoleic/MultiRoute/actions/workflows/build.yml)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Linoleic/MultiRoute/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/Xposed-Modules-Repo/io.github.linoleic.multiroute?label=release)](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/releases)
+[![Android](https://img.shields.io/badge/Android-11%2B-green.svg)](https://developer.android.com)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
-**为每个应用指定独立的网络出口。**
+MultiRoute 是一个 Android LSPosed 模块，提供分应用路由、副 Wi-Fi 连接管理和个人热点上游选择。分流使用 Linux 内核策略路由，不使用用户态 VPN 转发。
 
-Android 默认只允许一个全局默认网络，即使同时连接主副 Wi-Fi 与蜂窝数据，普通应用也只能走其中一条。MultiRoute 基于 Xposed 框架解开这一限制 —— 将应用分别指派到主 Wi-Fi、副 Wi-Fi（双 WLAN）、移动蜂窝或有线以太网，实现多网络并行出口。流量由内核策略路由（`ip rule`）接管，**不使用 VPN**，保持原生的吞吐与极低时延。
+> 本仓库存放模块索引说明和发布资源。源码、完整文档与问题反馈请访问 [Linoleic/MultiRoute](https://github.com/Linoleic/MultiRoute)。
 
-> 本仓库仅存放 LSPosed 模块仓库索引所需的 Release 资源。**源码、问题反馈与完整文档请访问主仓库：[Linoleic/MultiRoute](https://github.com/Linoleic/MultiRoute)。**
+## 功能
 
-## 核心功能
-
-- **分应用通道指派**：自由指定应用出口链路，未指派应用保持系统默认路由。
-- **内置双 Wi-Fi 助手**：打破系统对副 WLAN 的手动连接限制，支持自动探测、厂商专用、系统覆盖及 Root 直连等多种方案；支持同名热点分频选择与异常惩罚清除。
-- **自动容灾回退**：指派链路断开时自动切换至默认网络借道保活，链路恢复后自动迁回。
-- **分身与多用户支持**：厂商双开（如小米应用双开）与工作资料独立列出，可分别配置不同出口。
-- **DNS 随通道走**：指派应用的基础 DNS 查询重定向至对应链路的解析器（保留安全 DNS）。
-- **局域网直连放行**：内网设备（NAS、打印机、本地服务）在被指派到蜂窝等通道时仍可直连。
-- **开机自动恢复**：开机自启脚本与系统广播协同恢复分流规则，重启后在锁屏状态即可生效。
-- **系统诊断日志**：一键生成路由表、规则生效状态与日志快照，支持系统分享与本地文件导出。
+- **分应用路由**：为应用选择主 Wi-Fi、副 Wi-Fi、蜂窝或以太网；支持独立用户空间中的分身和工作资料。
+- **副 Wi-Fi 管理**：提供自动、小米专用、AOSP 和 Root 直连方案，按 BSSID 与频段区分同名接入点。
+- **个人热点上游选择**：选择蜂窝、副 Wi-Fi 或系统默认网络，并显示实际出口。
+- **场景方案**：按网络条件或手动选择分流方案，支持按优先级叠加。
+- **网络策略**：提供通道不可用时的回退、恢复延迟和局域网直连放行。
+- **DNS 改写**：将被指派应用的 IPv4 UDP/TCP 53 端口流量改写到所选通道的解析器。
+- **配置备份与恢复**：支持导入预览、按类别恢复和旧版配置迁移；导出不含 Wi-Fi 密码。
+- **状态与诊断**：显示网络通道和模块状态，支持诊断日志导出与分享。
 
 ## 运行环境
 
 | 项目 | 要求 |
 | :-- | :-- |
-| Root 环境 | KernelSU / Magisk / APatch |
-| Xposed 框架 | LSPosed（或实现 LibXposed API 101+ 的兼容框架） |
-| 模块作用域 | **仅系统框架**（`system` / `system_server`） |
-| 系统版本 | **Android 11 及以上**（`minSdk` 30）；已在 **Android 16 与 17（HyperOS）** 实机验证 |
+| Root | KernelSU / Magisk / APatch |
+| Xposed 框架 | LSPosed，或实现 LibXposed API 101+ 的兼容框架 |
+| Android | Android 11 及以上；AOSP Multi-Internet 连接方案要求 Android 13 及以上 |
+| 模块作用域 | 系统框架；热点功能还需设备对应的 NetworkStack / Tethering 包 |
 
-## 使用须知
+NetworkStack / Tethering 包包括 `com.android.networkstack`、`com.android.networkstack.tethering`、`com.google.android.networkstack` 和 `com.google.android.networkstack.tethering`，仅启用设备中存在的对应作用域。
 
-1. **激活模块**：在 LSPosed 管理器中勾选本模块，作用域勾选**系统框架**，然后重启系统（或软重启 Zygote）。
-2. **模块更新**：更新模块 APK 后必须重启系统框架才能加载新代码；增删或修改应用分流规则**无需**重启。
-3. **VPN 兼容性**：在全局 VPN 模式下，被指派的应用将绕过 VPN 隧道；若开启了系统的「始终开启的 VPN 并阻止没有 VPN 的连接」，系统将优先由 VPN 接管。
+## 使用说明与限制
+
+1. 在 LSPosed 中启用模块及所需作用域，然后重启设备。更新模块 APK 后也需重启以加载新代码；修改应用分流规则无需重启。
+2. AOSP / 通用 Multi-Internet 方案仅连接系统已保存的网络；首次连接前，请先在系统 Wi-Fi 设置中保存。
+3. 双 Wi-Fi 与热点并发取决于硬件、固件和 ROM。Root 不会增加硬件并发能力，息屏连接也受系统策略影响。
+4. 热点上游由 Android 异步重选；转发、NAT、IPv6 和硬件卸载由系统管理，实际行为受设备和运营商策略影响。
+5. IPv6 DNS、Private DNS（DoT）和 DoH 不改写。VPN 下的流量与 DNS 路径取决于 VPN 模式和策略。
+6. 开机恢复用于重建路由规则，不会建立副 Wi-Fi 连接；恢复时间取决于网络是否就绪。
 
 ## 相关链接
 
-- 源码与完整文档：[Linoleic/MultiRoute](https://github.com/Linoleic/MultiRoute)
-- 版本更新日志：[CHANGELOG.md](https://github.com/Linoleic/MultiRoute/blob/master/CHANGELOG.md)
-- 问题与反馈：[GitHub Issues](https://github.com/Linoleic/MultiRoute/issues)
-- 模块索引：[LSPosed 模块仓库](https://modules.lsposed.org/module/io.github.linoleic.multiroute)
+- [下载与版本发布](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/releases)
+- [完整中文说明](https://github.com/Linoleic/MultiRoute/blob/master/README_CN.md)
+- [版本更新日志](https://github.com/Linoleic/MultiRoute/blob/master/CHANGELOG.md)
+- [问题反馈](https://github.com/Linoleic/MultiRoute/issues)
+- [LSPosed 模块索引](https://modules.lsposed.org/module/io.github.linoleic.multiroute)
 
 ## 许可协议
 
-[GNU General Public License v3.0](https://github.com/Linoleic/MultiRoute/blob/master/LICENSE)
+[GNU General Public License v3.0](LICENSE)

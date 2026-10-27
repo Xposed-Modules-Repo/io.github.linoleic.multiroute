@@ -2,50 +2,53 @@
 
 [简体中文](README.md) | [**English**](README_EN.md)
 
-[![Release](https://img.shields.io/github/v/release/Linoleic/MultiRoute?label=release)](https://github.com/Linoleic/MultiRoute/releases)
-[![Android](https://img.shields.io/badge/Android-11%2B%20%28%20verified%20on%2016%20%2F%2017%20%29-green.svg)](https://developer.android.com)
-[![build](https://github.com/Linoleic/MultiRoute/actions/workflows/build.yml/badge.svg)](https://github.com/Linoleic/MultiRoute/actions/workflows/build.yml)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Linoleic/MultiRoute/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/Xposed-Modules-Repo/io.github.linoleic.multiroute?label=release)](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/releases)
+[![Android](https://img.shields.io/badge/Android-11%2B-green.svg)](https://developer.android.com)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
-**Give every app its own network egress.**
+MultiRoute is an Android LSPosed module for per-app routing, secondary Wi-Fi connection management and hotspot upstream selection. Routing uses Linux kernel policy rules without userspace VPN forwarding.
 
-Android restricts network traffic to a single default interface. Even when connected to dual Wi-Fi and mobile data simultaneously, applications cannot utilize multiple networks concurrently without custom socket programming. MultiRoute lifts this limitation via Xposed: assign applications individually to Primary Wi-Fi, Secondary Wi-Fi (Dual WLAN), Cellular, or Ethernet. Network routing is handled directly by kernel policy routing (`ip rule`), requiring **no VPN service**, ensuring native throughput and ultra-low latency.
-
-> This repository only hosts the releases indexed by the LSPosed module repository. **For source code, issue tracking, and comprehensive documentation, please visit the main repository: [Linoleic/MultiRoute](https://github.com/Linoleic/MultiRoute).**
+> This repository hosts module index information and releases. Visit [Linoleic/MultiRoute](https://github.com/Linoleic/MultiRoute) for source code, full documentation and issue reports.
 
 ## Features
 
-- **Per-App Routing**: Route specific apps through dedicated network interfaces while unassigned apps use the default route.
-- **Built-in Dual Wi-Fi Manager**: Connect to secondary Wi-Fi manually without OEM restrictions, featuring 4 connection schemes (Auto, OEM/Xiaomi Slave, AOSP Overlay, Root Direct `SYSTEM_UID`), multi-band SSID selection, and BSSID penalty clearing.
-- **Automatic Failover**: Automatically reroutes traffic through the default network when the assigned interface disconnects, and seamlessly migrates back once restored.
-- **App Clones & Multi-User Support**: Independently configure cloned apps (e.g., Xiaomi Dual Apps) and work profiles.
-- **Per-Interface DNS**: Automatically redirects port 53 DNS queries to the assigned interface's upstream resolver (secure DNS preserved).
-- **LAN Bypass**: Allows direct access to local subnet devices (NAS, printers, casting) even when an app is routed through mobile data.
-- **Automatic Boot Recovery**: Restores routing rules automatically on system boot via root scripts and system broadcasts.
-- **System Diagnostics**: One-tap diagnostic log export with route table status, kernel rules, and logcat snapshots via SAF and system sharing.
+- **Per-app routing:** Select primary Wi-Fi, secondary Wi-Fi, cellular or Ethernet for an app, including clones and work profiles in separate Android user spaces.
+- **Secondary Wi-Fi management:** Provide Auto, Xiaomi, AOSP and Root Direct schemes, distinguishing same-SSID access points by BSSID and band.
+- **Hotspot upstream selection:** Choose cellular, secondary Wi-Fi or the system default network, and display the actual upstream.
+- **Scenario plans:** Select plans by network conditions or manually, with priority-based layering.
+- **Network policies:** Support fallback when a channel is unavailable, recovery delays and on-link LAN bypass.
+- **DNS redirection:** Redirect assigned apps' IPv4 UDP/TCP port 53 traffic to the selected channel's resolver.
+- **Configuration backup and restore:** Preview imports, restore selected categories and migrate older files. Exports omit Wi-Fi passwords.
+- **Status and diagnostics:** Display network and module status, and export or share diagnostic logs.
 
-## Compatibility
+## Requirements
 
 | Item | Requirement |
 | :-- | :-- |
-| Root Solution | KernelSU / Magisk / APatch |
-| Xposed Framework | LSPosed (or compatible framework supporting LibXposed API 101+) |
-| Module Scope | **System Framework only** (`system` / `system_server`) |
-| Android Version | **Android 11+** (`minSdk` 30); verified on **Android 16 and 17 (HyperOS)** |
+| Root | KernelSU / Magisk / APatch |
+| Xposed framework | LSPosed, or a compatible framework implementing LibXposed API 101+ |
+| Android | Android 11 or later; the AOSP Multi-Internet scheme requires Android 13 or later |
+| Module scope | System framework; hotspot features also require the device's NetworkStack / Tethering packages |
 
-## Notes
+NetworkStack / Tethering packages include `com.android.networkstack`, `com.android.networkstack.tethering`, `com.google.android.networkstack` and `com.google.android.networkstack.tethering`. Enable the corresponding scopes that exist on the device.
 
-1. **Activation**: Enable MultiRoute in LSPosed Manager, check **System Framework** in scope, then reboot the device (or soft restart Zygote).
-2. **Module Updates**: A system reboot is required after updating the module APK to load new hook bytecode. Modifying routing rules in the app does **not** require a reboot.
-3. **VPN Coexistence**: With a full-tunnel VPN, assigned apps will bypass the VPN tunnel. If Android's "Always-on VPN with block connections without VPN" is enabled, the VPN takes precedence.
+## Usage and limitations
+
+1. Enable the module and required scopes in LSPosed, then reboot. Reboot after updating the module APK to load new code; changing app routing rules does not require a reboot.
+2. AOSP / generic Multi-Internet schemes connect only to system-saved networks. Save a new network in system Wi-Fi settings first.
+3. Dual Wi-Fi and hotspot concurrency depend on hardware, firmware and ROM. Root cannot add hardware concurrency, and screen-off connections remain subject to system policy.
+4. Android reselects the hotspot upstream asynchronously and manages forwarding, NAT, IPv6 and hardware offload. Results depend on device and carrier policy.
+5. IPv6 DNS, Private DNS (DoT) and DoH are not rewritten. Traffic and DNS paths with a VPN depend on its mode and policy.
+6. Boot recovery rebuilds routing rules without establishing secondary Wi-Fi connections; timing depends on network availability.
 
 ## Links
 
-- Source & Documentation: [Linoleic/MultiRoute](https://github.com/Linoleic/MultiRoute)
-- Changelog: [CHANGELOG.md](https://github.com/Linoleic/MultiRoute/blob/master/CHANGELOG.md)
-- Issues & Support: [GitHub Issues](https://github.com/Linoleic/MultiRoute/issues)
-- Module Repository: [LSPosed Repository](https://modules.lsposed.org/module/io.github.linoleic.multiroute)
+- [Downloads and releases](https://github.com/Xposed-Modules-Repo/io.github.linoleic.multiroute/releases)
+- [Full English documentation](https://github.com/Linoleic/MultiRoute/blob/master/README.md)
+- [Changelog](https://github.com/Linoleic/MultiRoute/blob/master/CHANGELOG.md)
+- [Issue reports](https://github.com/Linoleic/MultiRoute/issues)
+- [LSPosed module index](https://modules.lsposed.org/module/io.github.linoleic.multiroute)
 
 ## License
 
-[GNU General Public License v3.0](https://github.com/Linoleic/MultiRoute/blob/master/LICENSE)
+[GNU General Public License v3.0](LICENSE)
