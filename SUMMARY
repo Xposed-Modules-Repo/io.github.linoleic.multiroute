@@ -1,2 +1,2 @@
-分应用路由、副 Wi-Fi 管理与个人热点上游选择。
-Per-app routing, secondary Wi-Fi management, and hotspot upstream selection.
+分应用策略路由（支持主副 Wi-Fi、副卡数据与以太网）、热点上游选择与无线调试辅助。
+Per-app policy routing (primary/secondary Wi-Fi, secondary SIM, Ethernet), hotspot upstream selection, and wireless debugging helper.
